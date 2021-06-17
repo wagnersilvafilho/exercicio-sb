@@ -5,12 +5,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.hibernate.validator.constraints.Range;
+
 @Entity
 public class Produto {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
+	@Range(min = 0)
+	private double preco;
+	@Range(min = 0, max = 1)
+	private double desconto;
 	
 	public Produto() {
 
@@ -18,6 +24,13 @@ public class Produto {
 	
 	public Produto(String nome) {
 		this.nome = nome;
+	}
+
+	public Produto(String nome, double preco, double desconto) {
+		super();
+		this.nome = nome;
+		this.preco = preco;
+		this.desconto = desconto;
 	}
 
 	public Long getId() {
@@ -32,7 +45,21 @@ public class Produto {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
-	
+
+	public double getPreco() {
+		return preco;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
+	public double getDesconto() {
+		return desconto;
+	}
+
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
+	}
 
 }
