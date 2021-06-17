@@ -44,9 +44,7 @@ public class ProdutoController {
 		if(qtdePagina >= 5) qtdePagina = 5;
 		Pageable page = PageRequest.of(numeroPagina, 2);
 		return produtoRepository.findAll(page);
-	}
-	
-	
+	}	
 	
 	@GetMapping(path = "/{id}")
 	public Optional<Produto> obterProdutoPorId(@PathVariable Long id){
@@ -64,6 +62,10 @@ public class ProdutoController {
 		produtoRepository.deleteById(id);
 	}
 	
+	@GetMapping(path = "/nome/{parteNome}")
+	public Iterable<Produto> obterProdutosPorNome(@PathVariable String parteNome){
+		return produtoRepository.findByNomeContainingIgnoreCase(parteNome);
+	}
 	
 	
 }
