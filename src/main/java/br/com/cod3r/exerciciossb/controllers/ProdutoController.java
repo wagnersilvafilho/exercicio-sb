@@ -1,9 +1,16 @@
 package br.com.cod3r.exerciciossb.controllers;
 
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,11 +24,33 @@ public class ProdutoController {
 	@Autowired
 	ProdutoRepository produtoRepository;
 		
-	@PostMapping
-	public @ResponseBody Produto novoProduto(@RequestParam String nome, @RequestParam double preco, @RequestParam double desconto) {
-		Produto produto = new Produto(nome, preco, desconto);
+//	@PostMapping
+//	O método abaixo consegue realizar put e post normalmentem, sem necessidade de um put e post separados
+	@RequestMapping(method = {RequestMethod.POST, RequestMethod.PUT})
+	public @ResponseBody Produto novoProduto(@Valid Produto produto) {
 		produtoRepository.save(produto);
 		return produto;
+	}
+	
+	@GetMapping
+	public Iterable<Produto> obterProdutos() {
+		return produtoRepository.findAll();
+	}
+	
+	@GetMapping(path = "/{id}")
+	public Optional<Produto> obterProdutoPorId(@PathVariable Long id){
+		return produtoRepository.findById(id);
+	}
+	
+//	@PutMapping
+//	public Produto alterarProduto(@Valid Produto produto) {
+//		produtoRepository.save(produto);
+//		return produto;
+//	}
+	
+	@DeleteMapping(path = "/{id}")
+	public void excluirProduto(@PathVariable Long id) {
+		produtoRepository.deleteById(id);
 	}
 	
 }
